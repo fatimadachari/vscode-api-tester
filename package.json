@@ -1,0 +1,75 @@
+{
+  "name": "vscode-api-tester",
+  "displayName": "API Route Tester",
+  "description": "Test Next.js and NestJS API routes directly from VSCode",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:apiTester.routesList",
+    "workspaceContains:**/api/**"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "apiTester.sendRequest",
+        "title": "API Tester: Send Request",
+        "icon": "$(send)"
+      },
+      {
+        "command": "apiTester.refresh",
+        "title": "API Tester: Refresh Routes",
+        "icon": "$(refresh)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "api-tester",
+          "title": "API Tester",
+          "icon": "resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "api-tester": [
+        {
+          "id": "apiTester.routesList",
+          "name": "Routes"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "apiTester.refresh",
+          "when": "view == apiTester.routesList",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "axios": "^1.6.5"
+  }
+}
