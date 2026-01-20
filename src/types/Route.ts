@@ -4,3 +4,8 @@ export interface Route {
   filePath: string;
   controllerName?: string;
 }
+
+export interface RouteGroup {
+  name: string;
+  routes: Route[];
+}
