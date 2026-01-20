@@ -10,8 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onView:apiTester.routesList",
-    "workspaceContains:**/api/**"
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -25,6 +24,11 @@
         "command": "apiTester.refresh",
         "title": "API Tester: Refresh Routes",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "apiTester.configureAuth",
+        "title": "API Tester: Configure Authentication",
+        "icon": "$(key)"
       }
     ],
     "viewsContainers": {
@@ -40,7 +44,8 @@
       "api-tester": [
         {
           "id": "apiTester.routesList",
-          "name": "Routes"
+          "name": "Routes",
+          "icon": "resources/icon.svg"
         }
       ]
     },
@@ -49,7 +54,12 @@
         {
           "command": "apiTester.refresh",
           "when": "view == apiTester.routesList",
-          "group": "navigation"
+          "group": "navigation@1"
+        },
+        {
+          "command": "apiTester.configureAuth",
+          "when": "view == apiTester.routesList",
+          "group": "navigation@2"
         }
       ]
     }

@@ -1,21 +1,19 @@
 import * as vscode from 'vscode';
 import { RouteTreeProvider } from './providers/RouteTreeProvider';
 import { sendRequest } from './commands/sendRequest';
+import { configureAuth } from './commands/configureAuth';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('API Tester extension activated!');
 
-  // Tree Provider (sidebar com lista de rotas)
   const routeProvider = new RouteTreeProvider();
   vscode.window.registerTreeDataProvider('apiTester.routesList', routeProvider);
 
-  // Comando: Refresh rotas
   const refreshCommand = vscode.commands.registerCommand('apiTester.refresh', () => {
     routeProvider.refresh();
     vscode.window.showInformationMessage('Routes refreshed!');
   });
 
-  // Comando: Enviar request
   const sendRequestCommand = vscode.commands.registerCommand(
     'apiTester.sendRequest',
     async (route) => {
@@ -23,7 +21,14 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(refreshCommand, sendRequestCommand);
+  const configureAuthCommand = vscode.commands.registerCommand(
+    'apiTester.configureAuth',
+    async () => {
+      await configureAuth();
+    }
+  );
+
+  context.subscriptions.push(refreshCommand, sendRequestCommand, configureAuthCommand);
 }
 
 export function deactivate() {}
