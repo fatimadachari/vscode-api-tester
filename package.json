@@ -9,9 +9,7 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onStartupFinished"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -29,6 +27,11 @@
         "command": "apiTester.configureAuth",
         "title": "API Tester: Configure Authentication",
         "icon": "$(key)"
+      },
+      {
+        "command": "apiTester.configureBaseUrl",
+        "title": "API Tester: Configure Base URL",
+        "icon": "$(link)"
       }
     ],
     "viewsContainers": {
@@ -44,8 +47,7 @@
       "api-tester": [
         {
           "id": "apiTester.routesList",
-          "name": "Routes",
-          "icon": "resources/icon.svg"
+          "name": "Routes"
         }
       ]
     },
@@ -57,11 +59,33 @@
           "group": "navigation@1"
         },
         {
-          "command": "apiTester.configureAuth",
+          "command": "apiTester.configureBaseUrl",
           "when": "view == apiTester.routesList",
           "group": "navigation@2"
+        },
+        {
+          "command": "apiTester.configureAuth",
+          "when": "view == apiTester.routesList",
+          "group": "navigation@3"
         }
       ]
+    },
+    "configuration": {
+      "title": "API Tester",
+      "properties": {
+        "apiTester.baseUrl": {
+          "type": "string",
+          "default": "",
+          "description": "Base URL for API requests (e.g., http://localhost:3000)"
+        },
+        "apiTester.auth": {
+          "type": "object",
+          "default": {
+            "type": "none"
+          },
+          "description": "Authentication configuration"
+        }
+      }
     }
   },
   "scripts": {

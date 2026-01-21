@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import axios from 'axios';
 import { Route } from '../types/Route';
 import { getAuthConfig, buildAuthHeaders } from '../utils/tokenManager';
+import { getBaseUrl, promptForBaseUrl } from '../utils/configManager';
 
 export async function sendRequest(route: Route) {
   if (!route) {
@@ -9,18 +10,17 @@ export async function sendRequest(route: Route) {
     return;
   }
 
-  const baseUrl = await vscode.window.showInputBox({
-    prompt: 'Enter API base URL (e.g., http://localhost:3000)',
-    value: 'http://localhost:3000'
-  });
-
+  // Tenta pegar base URL salva, se não tiver, pede
+  let baseUrl = await getBaseUrl();
+  
   if (!baseUrl) {
-    return;
+    baseUrl = await promptForBaseUrl();
+    if (!baseUrl) {
+      return;
+    }
   }
 
   const fullUrl = `${baseUrl}${route.path}`;
-
-  // Pegar auth config
   const auth = await getAuthConfig();
   const headers = buildAuthHeaders(auth);
 
@@ -41,7 +41,6 @@ export async function sendRequest(route: Route) {
     outputChannel.appendLine('');
     outputChannel.appendLine('Headers:');
     Object.entries(headers).forEach(([key, value]) => {
-      // Esconde token completo
       const displayValue = key.toLowerCase().includes('auth') || key.toLowerCase().includes('key')
         ? `${value.substring(0, 10)}...`
         : value;
