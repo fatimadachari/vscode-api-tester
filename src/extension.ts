@@ -3,6 +3,7 @@ import { RouteTreeProvider } from './providers/RouteTreeProvider';
 import { sendRequest } from './commands/sendRequest';
 import { configureAuth } from './commands/configureAuth';
 import { configureBaseUrl } from './commands/configureBaseUrl';
+import { RequestPanel } from './webview/RequestPanel';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('1. Starting API Tester activation...');
@@ -26,7 +27,8 @@ export function activate(context: vscode.ExtensionContext) {
       'apiTester.sendRequest',
       async (route) => {
         console.log('SendRequest command executed', route);
-        await sendRequest(route);
+        // Abre webview ao invés do antigo sistema
+        RequestPanel.createOrShow(context.extensionUri, route);
       }
     );
 
